@@ -12,7 +12,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name ="book")
 public class Book {
 
   @Id
@@ -20,7 +19,6 @@ public class Book {
   private Long id;
   private String title;
   private String isbn;
-  private String publisher;
 
   @ManyToMany
   @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
@@ -30,16 +28,14 @@ public class Book {
   public Book() {
   }
 
-  public Book(String title, String isbn, String publisher) {
+  public Book(String title, String isbn) {
     this.title = title;
     this.isbn = isbn;
-    this.publisher = publisher;
   }
 
-  public Book(String title, String isbn, String publisher, Set<Author> authors) {
+  public Book(String title, String isbn, Set<Author> authors) {
     this.title = title;
     this.isbn = isbn;
-    this.publisher = publisher;
     this.authors = authors;
   }
 
@@ -67,19 +63,40 @@ public class Book {
     this.isbn = isbn;
   }
 
-  public String getPublisher() {
-    return publisher;
-  }
-
-  public void setPublisher(String publisher) {
-    this.publisher = publisher;
-  }
-
   public Set<Author> getAuthors() {
     return authors;
   }
 
   public void setAuthors(Set<Author> authors) {
     this.authors = authors;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Book book = (Book) o;
+
+    return id != null ? id.equals(book.id) : book.id == null;
+  }
+
+  @Override
+  public int hashCode() {
+    return id != null ? id.hashCode() : 0;
+  }
+
+  @Override
+  public String toString() {
+    return "Book{" +
+        "id=" + id +
+        ", title='" + title + '\'' +
+        ", isbn='" + isbn + '\'' +
+        ", authors=" + authors +
+        '}';
   }
 }
