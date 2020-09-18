@@ -2,8 +2,10 @@ package com.guastaferro.bootstrap;
 
 import com.guastaferro.model.Author;
 import com.guastaferro.model.Book;
+import com.guastaferro.model.Publisher;
 import com.guastaferro.repo.AuthorRepository;
 import com.guastaferro.repo.BookRepository;
+import com.guastaferro.repo.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -15,10 +17,13 @@ public class BootStrapData implements CommandLineRunner {
   private AuthorRepository authorRepository;
   @Autowired
   private BookRepository bookRepository;
+  @Autowired
+  private PublisherRepository publisherRepository;
 
-  public BootStrapData(AuthorRepository authorRepository, BookRepository bookRepository) {
+  public BootStrapData(AuthorRepository authorRepository, BookRepository bookRepository, PublisherRepository publisherRepository) {
     this.authorRepository = authorRepository;
     this.bookRepository = bookRepository;
+    this.publisherRepository=publisherRepository;
   }
 
   @Override
@@ -39,7 +44,14 @@ public class BootStrapData implements CommandLineRunner {
     authorRepository.save(rod);
     bookRepository.save(book2);
 
+    Publisher mondadori = new Publisher("Andrea","Mondadori");
+    Publisher wassup = new Publisher("Wass","Up");
+
+    publisherRepository.save(mondadori);
+    publisherRepository.save(wassup);
+
     System.out.println("Started in BootStrap");
     System.out.println("Number of Books: "+ bookRepository.count());
+    System.out.println("Number of publishers: " + publisherRepository.count());
   }
 }
